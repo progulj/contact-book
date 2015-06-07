@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+ <context:component-scan base-package="com.pero" />
+ <mvc:annotation-driven />
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.postgresql.Driver"/>
+		<property name="url" value="jdbc:postgresql://ec2-54-83-57-86.compute-1.amazonaws.com/d5j4vhrv9r292o?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
+		<property name="username" value="gsiwzvfhjghkvi" />
+		<property name="password" value="hmlR6jYPG_4vvkEkZ1K-kn2n-t" />
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="20" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="0" />
+		<property name="maxWait" value="10000" />
+		<property name="minEvictableIdleTimeMillis" value="180000" />
+		<property name="timeBetweenEvictionRunsMillis" value="180000" />
+		<property name="validationQuery" value="SELECT 1 " />
+		<property name="testOnBorrow" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="60" />
+		<property name="logAbandoned" value="true" />
+	</bean>
+
+ <bean id="sessionFactory"
+  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+  <property name="dataSource" ref="dataSource" />
+  <property name="annotatedClasses">
+   <list>
+    <value>com.pero.model.Contact</value>
+   </list>
+  </property>
+  
+  <property name="hibernateProperties">
+   <props>
+   	<prop key="current.session.contex.class">thread</prop>
+    <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+   </props>
+  </property>
+ </bean>
+
+ <bean id="txManager"
+  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+  <property name="sessionFactory" ref="sessionFactory" />
+ </bean>
+
+ <bean id="persistenceExceptionTranslationPostProcessor"
+  class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+  
+  
+ <bean id="contactDataDao" class="com.pero.dao.impl.ContactDataDaoImpl"></bean>
+ <bean id="contactDataServices" class="com.pero.service.impl.ContactServiceImpl"></bean>
+
+</beans>
