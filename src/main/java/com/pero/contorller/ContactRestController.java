@@ -117,7 +117,7 @@ public class ContactRestController {
 		return new ResponseEntity<List<Contact>>(contactList, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody
 	ResponseEntity<Status> deleteContact(@PathVariable("id") long id) {
 		Status status = new Status();
